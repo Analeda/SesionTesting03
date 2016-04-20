@@ -14,8 +14,13 @@ public class CategoriaTest {
 		assertThat(resultado,is("baño"));
 	}
 	
+	@Test
 	public void asignarNombre(){
-		
+		Categoria categoria=new Categoria(null,null);
+		categoria.setNombre("cocina");
+		String resultado= categoria.getNombre();
+		assertThat(resultado,is("cocina"));
+
 	}
 	
 	@Test
@@ -35,7 +40,10 @@ public class CategoriaTest {
 	@Test 
 	
 	public void asignarCodigo(){
-		
+		Categoria categoria=new Categoria("baño",null);
+		categoria.setCodigo("02");
+		String resultado= categoria.getCodigo();
+		assertThat(resultado,is("02"));
 	}
 	
 	

@@ -7,14 +7,11 @@ import static org.hamcrest.CoreMatchers.nullValue;
 public class ProductoTest {
 	
 	
-	//private Producto producto= new Producto("shampoo", 11, 15);	
-	//private Categoria categoria=new Categoria("baño"," 02");
-	
 	@Test
 	public void obtenerStock(){
 	    Producto producto= new Producto("shampoo", 11, 15);
 		int resultado=producto.getStock();
-		assertThat(resultado,is(producto.getStock()));
+		assertThat(resultado,is(0));
 			
 	}
 	
@@ -25,7 +22,14 @@ public class ProductoTest {
 		 assertThat(resultado,is(true));
 		// assertTrue(resultado);
 	}
-	
+	@Test
+	public void noEsBajoStockConStock12(){
+		 Producto producto= new Producto("shampoo", 11, 15);
+		 producto.stock=12;
+		 boolean resultado=producto.isBajoStock();
+		 assertThat(resultado,is(false));
+		// assertTrue(resultado);
+	}
 	@Test
 	
 	public void obtenerStockFaltanteConStock0(){
@@ -51,5 +55,65 @@ public class ProductoTest {
 		Existencia resultado= producto.getProximaExistencia();	
 	}
 	
+	@Test
+	
+	public void añadirExistenciaStockMenorAStockMax(){
+		Existencia existencias= new Existencia("5");
+		Producto producto= new Producto("shampoo", 11, 15);
+		boolean resultado=producto.addExistencia(existencias);
+		assertThat(resultado,is(true));	
+	}
+	
+	@Test
+	public void añadirExistenciaStockMayorAStockMax(){
+		Existencia existencias= new Existencia("5");
+		Producto producto= new Producto("shampoo", 11, 15);
+		producto.stock=30;
+		boolean resultado=producto.addExistencia(existencias);
+		assertThat(resultado,is(false));	
+	}
+	
+	@Test
+	public void obtenerCategoria(){
+		Categoria categoria=new Categoria("baño","02");
+		Producto producto= new Producto("shampoo", 11, 15,categoria);
+		Categoria resultado=producto.getCategoria(); 
+		assertThat(resultado,is(categoria));
+		
+	}
+	
+	@Test 
+	public void asignarCategoria(){
+		Categoria categoria=new Categoria(""," 02");
+		Producto producto= new Producto("shampoo", 11, 15,categoria);
+		producto.setCategoria(categoria);
+		Categoria resultado=producto.getCategoria();
+		assertThat(resultado,is(categoria));	
+	}
+	
+	@Test
+	public void obtenerNombre(){
+		Producto producto= new Producto("shampoo", 11, 15);
+		String resultado=producto.getNombre();
+		assertThat(resultado,is("shampoo"));
+		
+	}
+	
+	@Test
+	public void asignarNombre(){
+		Producto producto= new Producto("", 11, 15);
+		producto.setNombre("acondicionador");
+		String resultado=producto.getNombre();
+		assertThat(resultado,is("acondicionador"));	
+	}
+	
+	@Test (expected=ExcepcionDeProducto.class)
+	public void obtenerProxExistenciaConStockMenorA0() throws ExcepcionDeProducto{
+		Producto producto= new Producto("shampoo", 11, 15);
+		producto.stock=-3;
+		String resultado=producto.getCodigoProximaExistencia();	
+	}
+	
+
 	
 }
