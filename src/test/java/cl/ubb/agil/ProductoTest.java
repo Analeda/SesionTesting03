@@ -64,14 +64,18 @@ public class ProductoTest {
 		assertThat(resultado,is(true));	
 	}
 	
+	
+	/* La prueba falla al momento en el que stock y el stock maximo son iguales, ya que deberia retornar 
+	 * true pero esta lanza false*/
 	@Test
-	public void añadirExistenciaStockMayorAStockMax(){
+	public void añadirExistenciaStockMayorAStockMax() throws ArrayIndexOutOfBoundsException{
 		Existencia existencias= new Existencia("5");
 		Producto producto= new Producto("shampoo", 11, 15);
-		producto.stock=30;
+		producto.stock=16;
 		boolean resultado=producto.addExistencia(existencias);
 		assertThat(resultado,is(false));	
 	}
+	
 	
 	@Test
 	public void obtenerCategoria(){
@@ -107,11 +111,31 @@ public class ProductoTest {
 		assertThat(resultado,is("acondicionador"));	
 	}
 	
+	@Test 
+	public void obtenerProxExistenciaConStockMayorA0yCategoria() throws ExcepcionDeProducto{
+		Existencia existencia=new Existencia("1");
+		Categoria categoria= new Categoria("baño", "02");
+		Producto producto= new Producto("shampoo", 11, 15,categoria);
+		producto.addExistencia(existencia);
+		String resultado=producto.getCodigoProximaExistencia();
+		assertThat(resultado,is("02-1"));
+	}
+	
+	@Test
+	public void obtenerProxExistenciaConStockMayotA0yCategoriaNull() throws ExcepcionDeProducto{
+		Existencia existencia=new Existencia("1");
+		Producto producto= new Producto("shampoo", 11, 15,null);
+		producto.addExistencia(existencia);
+		String resultado=producto.getCodigoProximaExistencia();
+		assertThat(resultado,is("XXXXX-1"));
+		
+	}
+	
 	@Test (expected=ExcepcionDeProducto.class)
-	public void obtenerProxExistenciaConStockMenorA0() throws ExcepcionDeProducto{
-		Producto producto= new Producto("shampoo", 11, 15);
-		producto.stock=-3;
-		String resultado=producto.getCodigoProximaExistencia();	
+	public void obtenerProxExistenciaStockMenos0() throws ExcepcionDeProducto{
+		Categoria categoria= new Categoria("baño", "02");
+		Producto producto= new Producto("shampoo", 11, 15,categoria);
+		String resultado=producto.getCodigoProximaExistencia();
 	}
 	
 
